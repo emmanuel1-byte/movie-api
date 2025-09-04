@@ -29,7 +29,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
       status = exception.getStatus();
       const res = exception.getResponse() as ErrorResponse;
 
-      code = res.code;
+      code = res.code || 'INVALID_INPUT';
       message = res.message;
       description = res.description || '';
     } else if (exception instanceof Error) {
