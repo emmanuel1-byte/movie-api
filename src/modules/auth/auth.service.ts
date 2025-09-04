@@ -1,8 +1,8 @@
 import {
-  BadRequestException,
   ConflictException,
   Injectable,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { UserService } from '../users/user.service';
@@ -42,7 +42,7 @@ export class AuthService {
 
     const isPasswordMatch = await bcrypt.compare(password, user.password);
     if (!isPasswordMatch) {
-      throw new BadRequestException({
+      throw new UnauthorizedException({
         code: 'INVALID_CREDENTIALS',
         message: 'Invalid credentials',
       });
