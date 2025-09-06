@@ -6,13 +6,7 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { Response } from 'express';
-
-export class ErrorResponse {
-  status: number;
-  code: string;
-  message: string;
-  description?: string;
-}
+import { ErrorResponse } from './types/error-response.type';
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {

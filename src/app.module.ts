@@ -5,10 +5,12 @@ import { DatabaseService } from './modules/database/database.service';
 import Joi from 'joi';
 import authConfig from './modules/config/auth.config';
 import { AuthModule } from './modules/auth/auth.module';
+import { MovieModule } from './modules/movies/movies.module';
 
 @Module({
   imports: [
     AuthModule,
+    MovieModule,
     ConfigModule.forRoot({
       isGlobal: true,
       load: [authConfig],
