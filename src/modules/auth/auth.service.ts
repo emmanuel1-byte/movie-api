@@ -51,7 +51,7 @@ export class AuthService {
     // Sign access and refresh tokens in parallel
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(
-        { sub: user.id },
+        { sub: user.id, role: user.role },
         {
           secret: this.configService.get<string>('auth.ACCESS_TOKEN_SECRET'),
           expiresIn: this.configService.get<string>(
@@ -60,7 +60,7 @@ export class AuthService {
         },
       ),
       this.jwtService.signAsync(
-        { sub: user.id },
+        { sub: user.id, role: user.role },
         {
           secret: this.configService.get<string>('auth.REFRESH_TOKEN_SECRET'),
           expiresIn: this.configService.get<string>(

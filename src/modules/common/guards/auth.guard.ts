@@ -7,10 +7,11 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { JsonWebTokenError, JwtService, TokenExpiredError } from '@nestjs/jwt';
 import { Request } from 'express';
+import { JwtPayload } from './types/jwt-payload.type';
 
 declare module 'express-serve-static-core' {
   interface Request {
-    user?: { sub: string };
+    user?: JwtPayload;
   }
 }
 @Injectable()
@@ -30,12 +31,9 @@ export class AuthGuard implements CanActivate {
       });
 
     try {
-      const payload = await this.jwtService.verifyAsync<{ sub: string }>(
-        token,
-        {
-          secret: this.configService.get<string>('auth.ACCESS_TOKEN_SECRET'),
-        },
-      );
+      const payload = await this.jwtService.verifyAsync<JwtPayload>(token, {
+        secret: this.configService.get<string>('auth.ACCESS_TOKEN_SECRET'),
+      });
       request.user = payload;
     } catch (err) {
       if (err instanceof TokenExpiredError)
