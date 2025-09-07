@@ -1,5 +1,4 @@
 import {
-  ConflictException,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -20,19 +19,13 @@ export class AuthService {
   ) {}
 
   async signup(payload: SignupDto) {
-    const user = await this.userService.findUser({ email: payload.email });
-    if (user) {
-      throw new ConflictException({
-        code: 'DUPLICATE_ENTRY',
-        message: 'You have an account with us',
-      });
-    }
+    await this.userService.getUser({ email: payload.email });
     const createdUser = await this.userService.createUser(payload);
     return createdUser;
   }
 
-  async login({ email, password }: LoginDto) {
-    const user = await this.userService.findUser({ email });
+  async login(payload: LoginDto) {
+    const user = await this.userService.getUser({ email: payload.email });
     if (!user) {
       throw new NotFoundException({
         code: 'RESOURCE_NOT_FOUND',
@@ -40,7 +33,10 @@ export class AuthService {
       });
     }
 
-    const isPasswordMatch = await bcrypt.compare(password, user.password);
+    const isPasswordMatch = await bcrypt.compare(
+      payload.password,
+      user.password,
+    );
     if (!isPasswordMatch) {
       throw new UnauthorizedException({
         code: 'INVALID_CREDENTIALS',
@@ -70,11 +66,10 @@ export class AuthService {
       ),
     ]);
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { password: _, ...sanitizedUser } = user;
+    const { password, ...sanitizedUser } = user;
+    void password;
 
     return {
-      message: 'Login successful',
       data: { accessToken, refreshToken, user: sanitizedUser },
     };
   }
