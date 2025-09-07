@@ -39,7 +39,7 @@ export class AuthGuard implements CanActivate {
       if (err instanceof TokenExpiredError)
         throw new UnauthorizedException({
           code: 'AUTH_REQUIRED',
-          message: 'Access token has expired bro',
+          message: 'Access token has expired',
         });
 
       if (err instanceof JsonWebTokenError)

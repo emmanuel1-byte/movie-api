@@ -5,8 +5,8 @@ export class LoginDto {
   @IsEmail()
   email: string;
 
-  @IsString({ message: 'Password must be a string' })
-  @MinLength(8, { message: 'Password must be at least 8 characters long' })
-  @MaxLength(32, { message: 'Password cannot exceed 32 characters' })
+  @IsString()
+  @MinLength(8)
+  @MaxLength(32)
   password: string;
 }

@@ -8,12 +8,12 @@ import {
   Min,
 } from 'class-validator';
 
-export class MoviePathDto {
+export class UserPathDto {
   @IsUUID()
   id: string;
 }
 
-export class MovieQueryDto {
+export class UserQueryDto {
   @IsOptional()
   @IsString()
   query: string;
